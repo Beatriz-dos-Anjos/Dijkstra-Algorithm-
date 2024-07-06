@@ -5,9 +5,10 @@ import math
 from tkinter import * 
 import numpy as np
 import math
+import os 
 
 
-def dijkstra_algorytm (beggining,destination,Graph):
+def dijkstra_algorytm (beggining,destination,Graph): #algoritmo para calcular o caminho com distancia mais curta 
     shortest_path= {}  #distancia mais curta
     for node in Graph.nodes():
         shortest_path[node]= math.inf
@@ -51,5 +52,13 @@ def dijkstra_algorytm (beggining,destination,Graph):
             cost_edge.append(Graph[path[i]][path[i+1]]['distance']) #adiciona o custo/peso à lista cost
             
         return path,cost_edge
+    
+file='database.txt'
+directory='.'
+
+def load_graph_data (file,directory): #criar o grafo com base no arquivo database.txt 
+
+        
+    
         
 
