@@ -7,6 +7,11 @@ import numpy as np
 import math
 import os 
 
+def load_graph_data (file,directory): # ler os dados do  arquivo database.txt  e criar um dataframe
+    file_path= os.path.join(directory,file)  #construir caminho para arquivo pelo os
+    data = pd.read_csv(file_path, header=None, names=['beggining', 'destination', 'distance']) #usar panda para ler o arquivo
+
+    return data
 
 def dijkstra_algorytm (beggining,destination,Graph): #algoritmo para calcular o caminho com distancia mais curta 
     shortest_path= {}  #distancia mais curta
@@ -53,12 +58,14 @@ def dijkstra_algorytm (beggining,destination,Graph): #algoritmo para calcular o 
             
         return path,cost_edge
     
-file='database.txt'
-directory='.'
 
-def load_graph_data (file,directory): #criar o grafo com base no arquivo database.txt 
 
         
     
         
 
+
+
+file='database.txt'
+directory='.'
+Graph=load_graph_data(file,directory) #ler e carrregar os dados
