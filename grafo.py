@@ -13,6 +13,13 @@ def load_graph_data (file,directory): # ler os dados do  arquivo database.txt  e
 
     return data
 
+def graph_construc(data): #criar um grafo a partir do df
+    graph = nx.Graph() #grafo vazio
+    for i in range(len(data)):  #percorre cada linha do dataframe 
+        graph.add_edge(data['beginning'][i], data['destination'][i], weight=data['distance'][i]) # adiciona arestas ao grafo vazio
+    return graph
+
+
 def dijkstra_algorytm (beggining,destination,Graph): #algoritmo para calcular o caminho com distancia mais curta 
     shortest_path= {}  #distancia mais curta
     for node in Graph.nodes():
@@ -58,6 +65,8 @@ def dijkstra_algorytm (beggining,destination,Graph): #algoritmo para calcular o 
             
         return path,cost_edge
     
+    
+
 
 
         
