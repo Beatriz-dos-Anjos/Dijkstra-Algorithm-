@@ -14,7 +14,7 @@ def load_graph_data (file,directory): # ler os dados do  arquivo database.txt  e
     return data
 
 def graph_construc(data): #criar um grafo a partir do df
-    graph = nx.Graph() #grafo vazio
+    graph= nx.Graph() #criar um grafo
     for i in range(len(data)):  #percorre cada linha do dataframe 
         graph.add_edge(data['beginning'][i], data['destination'][i], weight=data['distance'][i]) # adiciona arestas ao grafo vazio
     return graph
@@ -77,4 +77,5 @@ def dijkstra_algorytm (beggining,destination,Graph): #algoritmo para calcular o 
 
 file='database.txt'
 directory='.'
-Graph=load_graph_data(file,directory) #ler e carrregar os dados
+data=load_graph_data(file,directory) #ler e carrregar os dados
+Graph=graph_construc(data)
