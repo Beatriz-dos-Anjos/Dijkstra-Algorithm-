@@ -85,7 +85,7 @@ def find_shortest_path():
             result_label.config(text=result_text)
             plot_shortest_path(Graph, path)
     else:
-        messagebox.showwarning("Aviso", "Por favor, selecione os nós de início e destino")
+        messagebox.showwarning("Aviso", "Por favor, selecione os nós de origem e destino")
 
 def plot_shortest_path(Graph, path):
     plt.figure()
@@ -103,54 +103,51 @@ if not os.path.exists(file):
 data = load_graph_data(file, directory) #ler e carregar os dados
 Graph = graph_construc(data) #construir o grafo a partir dos dados
 
-# Criação da janela principal
-root = Tk()
-root.title("Algoritmo de Dijkstra")
-root.configure(bg='#f0f0f0') # fundo cinza claro
+#tela principal
 
-# Frame para centralizar os inputs
-frame = Frame(root, bg='white', bd=2, relief="groove", padx=20, pady=20)
+root = Tk() #criando janela principal
+root.title("Algoritmo de Dijkstra") #nome da janela
+root.configure(bg='#f0f0f0') #define o fundo cinza claro da tela
+
+frame = Frame(root, bg='white', bd=2, relief="groove", padx=20, pady=20) #centralizando os escritos
 frame.pack(pady=20, expand=True)
 
-# Canvas para desenhar o círculo vermelho
+#circulo vermelho da tela principal
 canvas = Canvas(frame, width=600, height=400, bg='white', highlightthickness=0)
 canvas.pack(expand=True)
-
-# Desenhar o círculo vermelho
 canvas.create_oval(150, 50, 450, 350, fill='red', outline='')
 
-# Frame para colocar os widgets dentro do círculo
+#posiciona widgets no círculo
 widget_frame = Frame(canvas, bg='red')
 canvas.create_window(300, 200, window=widget_frame)
 
-# Configuração das fontes
-font_style = ('Arial', 14, 'bold') # fonte mais grossa e legível
+font_style = ('Arial', 14, 'bold') #define fonte utilizada
 
-# Rótulos e Menus suspensos para selecionar os nós de início e destino
-Label(widget_frame, text="ORIGEM:", bg='red', fg='white', font=font_style).grid(row=0, column=0, padx=10, pady=5)
-start_node = StringVar(root)
-start_node_menu = OptionMenu(widget_frame, start_node, "")
-start_node_menu.config(font=font_style)
-start_node_menu.grid(row=0, column=1, padx=10, pady=5)
+#origem
+Label(widget_frame, text="ORIGEM:", bg='red', fg='white', font=font_style).grid(row=0, column=0, padx=10, pady=5) #definindo botão de origem
+start_node = StringVar(root) #armazena o ponto de origem
+start_node_menu = OptionMenu(widget_frame, start_node, "") #mostra opções de origem
+start_node_menu.config(font=font_style) #aplicando fonte das opções de origem
+start_node_menu.grid(row=0, column=1, padx=10, pady=5) #posiciona as opções de origem
 
-Label(widget_frame, text="DESTINO:", bg='red', fg='white', font=font_style).grid(row=1, column=0, padx=10, pady=5)
-end_node = StringVar(root)
-end_node_menu = OptionMenu(widget_frame, end_node, "")
-end_node_menu.config(font=font_style)
-end_node_menu.grid(row=1, column=1, padx=10, pady=5)
+#destino
+Label(widget_frame, text="DESTINO:", bg='red', fg='white', font=font_style).grid(row=1, column=0, padx=10, pady=5)#definindo botão de destino
+end_node = StringVar(root) #armazena o ponto de destino
+end_node_menu = OptionMenu(widget_frame, end_node, "") #mostra opções de destino
+end_node_menu.config(font=font_style) #aplicando fonte das opções de destino
+end_node_menu.grid(row=1, column=1, padx=10, pady=5) #posiciona as opções de destino
 
-# Atualizar opções dos menus com os nós carregados
+#atualiza as opções do menu
 update_node_options()
 
-# Botão para encontrar o caminho mais curto
-find_button = Button(widget_frame, text="Caminho mais curto", command=find_shortest_path, font=font_style, bg='white', fg='black')
-find_button.grid(row=2, column=0, columnspan=2, pady=10)
+#encontrar melhor caminho
+find_button = Button(widget_frame, text="Caminho", command=find_shortest_path, font=font_style, bg='white', fg='black') #definindo botão de melhor caminho
+find_button.grid(row=2, column=0, columnspan=2, pady=10) #posiciona o botão
 
-# Rótulo para exibir o resultado
 result_label = Label(root, text="", wraplength=400, justify=LEFT, bg='#f0f0f0', fg='black', font=font_style)
 result_label.pack(pady=10, expand=True)
 
-# Centralizar a janela na tela
+#ajustes de centralização da janela
 root.update_idletasks()
 width = root.winfo_width()
 height = root.winfo_height()
@@ -158,5 +155,5 @@ x = (root.winfo_screenwidth() // 2) - (width // 2)
 y = (root.winfo_screenheight() // 2) - (height // 3) # Ajuste para centralizar mais para baixo
 root.geometry('{}x{}+{}+{}'.format(width, height, x, y))
 
-# Iniciar o loop principal da GUI
+#loop principal da GUI
 root.mainloop()
