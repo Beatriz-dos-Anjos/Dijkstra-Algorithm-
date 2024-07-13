@@ -13,7 +13,8 @@ Este projeto foi desenvolvido utilizando as seguintes tecnologias e bibliotecas:
 - **Matplotlib**: Biblioteca para criação de visualizações gráficas, usada para plotar a rede de metrôs e os caminhos calculados.
 - **Tkinter**: Biblioteca padrão do Python para criação de interfaces gráficas (GUIs), utilizada para construir a interface do usuário.
 - **NumPy**: Biblioteca para computação numérica com suporte a arrays e matrizes, usada para operações matemáticas e cálculos necessários no projeto.
-
+---
+## 🖼️ Galeria do projeto
 
 
 
