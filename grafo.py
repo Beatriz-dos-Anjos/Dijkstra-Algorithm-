@@ -103,7 +103,6 @@ def plot_shortest_path(Graph, path):
     nx.draw_networkx_nodes(Graph, pos, nodelist=path, node_color='red', node_size=700)
     nx.draw_networkx_edges(Graph, pos, edgelist=path_edges, edge_color='red', width=3)
     
-    plt.title('Grafo Completo com Caminho Mais Curto em Vermelho', fontsize=15)
     plt.show()
 
 file = 'database.txt'
