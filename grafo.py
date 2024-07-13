@@ -19,15 +19,15 @@ def graph_construc(data):
     return graph
 
 def dijkstra_algorytm(beggining, destination, Graph):
-    shortest_path = {}
+    shortest_path = {}  #distância mais curta
     for node in Graph.nodes():
         shortest_path[node] = math.inf
     shortest_path[beggining] = 0  
-    previous = {}
+    previous = {}  #o nó anterior no caminho mais curto
     for node in Graph.nodes():
         previous[node] = None
 
-    visited = set()
+    visited = set() #marcar os nós visitados
     while len(visited) < len(Graph.nodes()):
         current_node = None
         min_path = math.inf
@@ -39,27 +39,27 @@ def dijkstra_algorytm(beggining, destination, Graph):
         if current_node is None:
             break
         
-        visited.add(current_node)
+        visited.add(current_node) #adicionando novo nó à lista de visitados
         
         for neighbor_node, edge_weight in Graph[current_node].items():
-            possible_distance = shortest_path[current_node] + edge_weight['weight']
-            if possible_distance < shortest_path[neighbor_node]:
-                shortest_path[neighbor_node] = possible_distance
-                previous[neighbor_node] = current_node
+            possible_distance = shortest_path[current_node] + edge_weight['weight'] #dist provavel para alcancar o nó vizinho do atual
+            if possible_distance < shortest_path[neighbor_node]:  # se o possível custo/dist for menor do que o caminho conhecido até o vizinho:
+                shortest_path[neighbor_node] = possible_distance #atualização da distância menor
+                previous[neighbor_node] = current_node  #atualização das anteriores
     
     if shortest_path[destination] == math.inf:
         return "Não existe caminho entre os nós"
     else:
         path = []
         node = destination
-        while node is not None:
-            path.append(node)
-            node = previous[node]
-        path.reverse()
+        while node is not None: #alcancando nós:
+            path.append(node) #adiciona à lista path ( fim ->inicio)
+            node = previous[node]  #para retroceder, o nó atual é atualizado para ser seu predecessor.
+        path.reverse() # (fim->inicial) vira  (inicial->final) , o caminho exibido de forma adequada.
         
-        cost_edge = []
-        for i in range(len(path) - 1):
-            cost_edge.append(Graph[path[i]][path[i + 1]]['weight'])
+        cost_edge = [] #custos das arestas pelo caminho mais curto
+        for i in range(len(path) - 1):  #quantidade de nós no caminho path 
+            cost_edge.append(Graph[path[i]][path[i + 1]]['weight']) #adiciona o custo/peso à lista cost
             
         return path, cost_edge
 
@@ -108,8 +108,6 @@ def plot_shortest_path(Graph, path):
 
 file = 'database.txt'
 directory = '.'
-if not os.path.exists(file):
-    raise FileNotFoundError(f"O arquivo {file} não foi encontrado no diretório atual.")
 
 data = load_graph_data(file, directory)
 Graph = graph_construc(data)
