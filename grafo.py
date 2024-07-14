@@ -7,31 +7,41 @@ from tkinter import *
 from tkinter import messagebox
 import numpy as np
 
-def load_graph_data(file, directory):
-    file_path = os.path.join(directory, file)
-    data = pd.read_csv(file_path, header=None, names=['beggining', 'destination', 'distance'])
+def load_graph_data(file, directory):  #caminho para o arquivo
+    file_path = os.path.join(directory, file) 
+    data = pd.read_csv(file_path, header=None, names=['beginning', 'destination', 'distance'])
     return data
 
-def graph_construc(data):
-    graph = nx.Graph()
-    for i in range(len(data)):
-        graph.add_edge(data['beggining'][i], data['destination'][i], weight=data['distance'][i])
+def graph_construct(data):
+    graph = {}  
+    for i in range(len(data)): #iterando pelo banco de dados, extrai os valores das 3 colunas para a linha
+        beginning=data['beginning'][i] #1
+        destination=data['destination'][i] #2
+        distance =  data['distance'][i] #3
+        #presença do nó de origem e destino - caso negativa, adiciona ao grafo
+        if beginning not in graph:
+            graph[beginning] = {}
+        if destination not in graph:
+            graph[destination] = {}
+        
+        graph[beginning][destination] = distance
+        graph[destination][beginning] = distance
+    
     return graph
 
-def dijkstra_algorytm(beggining, destination, Graph):
+def dijkstra_algorithm(beginning, destination, graph):
     shortest_path = {}  #distância mais curta
-    for node in Graph.nodes():
-        shortest_path[node] = math.inf
-    shortest_path[beggining] = 0  
-    previous = {}  #o nó anterior no caminho mais curto
-    for node in Graph.nodes():
+    for node in graph:
+        shortest_path[node] = math.inf    
+    shortest_path[beginning] = 0  
+    previous = {} #o nó anterior no caminho mais curto
+    for node in graph:
         previous[node] = None
-
     visited = set() #marcar os nós visitados
-    while len(visited) < len(Graph.nodes()):
+    while len(visited) < len(graph):
         current_node = None
         min_path = math.inf
-        for node in Graph.nodes():
+        for node in graph:
             if node not in visited and shortest_path[node] < min_path:
                 current_node = node
                 min_path = shortest_path[node]
@@ -41,8 +51,8 @@ def dijkstra_algorytm(beggining, destination, Graph):
         
         visited.add(current_node) #adicionando novo nó à lista de visitados
         
-        for neighbor_node, edge_weight in Graph[current_node].items():
-            possible_distance = shortest_path[current_node] + edge_weight['weight'] #dist provavel para alcancar o nó vizinho do atual
+        for neighbor_node, edge_weight in graph[current_node].items():
+            possible_distance = shortest_path[current_node] + edge_weight  #dist provavel para alcancar o nó vizinho do atual
             if possible_distance < shortest_path[neighbor_node]:  # se o possível custo/dist for menor do que o caminho conhecido até o vizinho:
                 shortest_path[neighbor_node] = possible_distance #atualização da distância menor
                 previous[neighbor_node] = current_node  #atualização das anteriores
@@ -52,19 +62,18 @@ def dijkstra_algorytm(beggining, destination, Graph):
     else:
         path = []
         node = destination
-        while node is not None: #alcancando nós:
+        while node is not None:  #alcancando nós:
             path.append(node) #adiciona à lista path ( fim ->inicio)
-            node = previous[node]  #para retroceder, o nó atual é atualizado para ser seu predecessor.
+            node = previous[node] #para retroceder, o nó atual é atualizado para ser seu predecessor.
         path.reverse() # (fim->inicial) vira  (inicial->final) , o caminho exibido de forma adequada.
         
-        cost_edge = [] #custos das arestas pelo caminho mais curto
-        for i in range(len(path) - 1):  #quantidade de nós no caminho path 
-            cost_edge.append(Graph[path[i]][path[i + 1]]['weight']) #adiciona o custo/peso à lista cost
+        cost_edge = [graph[path[i]][path[i + 1]] for i in range(len(path) - 1)]  #adiciona o custo/peso à lista cost
             
+        
         return path, cost_edge
 
 def update_node_options():
-    nodes = list(Graph.nodes())
+    nodes = list(Graph.keys())
     start_node_menu['menu'].delete(0, 'end')
     end_node_menu['menu'].delete(0, 'end')
     for node in nodes:
@@ -72,10 +81,10 @@ def update_node_options():
         end_node_menu['menu'].add_command(label=node, command=lambda value=node: end_node.set(value))
 
 def find_shortest_path():
-    beggining = start_node.get()
+    beginning = start_node.get()
     destination = end_node.get()
-    if beggining and destination:
-        result = dijkstra_algorytm(beggining, destination, Graph)
+    if beginning and destination:
+        result = dijkstra_algorithm(beginning, destination, Graph)
         if isinstance(result, str):
             result_label.config(text=result)
         else:
@@ -83,7 +92,7 @@ def find_shortest_path():
             cost_edge = [float(cost) for cost in cost_edge]
             total_distance = sum(cost_edge)
             result_text = (
-                f"Caminho mais curto de {beggining} para {destination}: {' -> '.join(path)}\n"
+                f"Caminho mais curto de {beginning} para {destination}: {' -> '.join(path)}\n"
                 f"Custos das arestas: {', '.join(map(str, cost_edge))}\n"
                 f"Distância Total: {total_distance:.2f}"
             )
@@ -92,16 +101,18 @@ def find_shortest_path():
     else:
         messagebox.showwarning("Aviso", "Por favor, selecione os nós de origem e destino")
 
-def plot_shortest_path(Graph, path):
-    plt.figure(figsize=(15, 10))
-    pos = nx.spring_layout(Graph)  # Utiliza o layout spring para melhor organização dos nós
-    # Desenha o grafo completo com todos os nós e arestas
-    nx.draw(Graph, pos, with_labels=True, node_color='lightblue', node_size=500, font_size=10, edge_color='gray', width=2, font_weight='bold')
+def plot_shortest_path(graph, path):
+    G = nx.Graph()
+    for node in graph:
+        for neighbor, weight in graph[node].items():
+            G.add_edge(node, neighbor, weight=weight)
+            
+    pos = nx.spring_layout(G) # Utiliza o layout spring para melhor organização dos nós
+    nx.draw(G, pos, with_labels=True, node_color='lightblue', node_size=500, font_size=10, edge_color='gray', width=2, font_weight='bold')
     
-    # Destaque o caminho mais curto em vermelho
-    path_edges = list(zip(path, path[1:]))
-    nx.draw_networkx_nodes(Graph, pos, nodelist=path, node_color='red', node_size=700)
-    nx.draw_networkx_edges(Graph, pos, edgelist=path_edges, edge_color='red', width=3)
+    path_edges = list(zip(path, path[1:]))    # Destaque o caminho mais curto em vermelho
+    nx.draw_networkx_nodes(G, pos, nodelist=path, node_color='red', node_size=700)
+    nx.draw_networkx_edges(G, pos, edgelist=path_edges, edge_color='red', width=3)
     
     plt.show()
 
@@ -109,9 +120,7 @@ file = 'database.txt'
 directory = '.'
 
 data = load_graph_data(file, directory)
-Graph = graph_construc(data)
-
-# Tela principal
+Graph = graph_construct(data)
 
 root = Tk()
 root.title("Algoritmo de Dijkstra")
