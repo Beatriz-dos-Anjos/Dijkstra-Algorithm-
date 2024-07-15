@@ -72,40 +72,40 @@ def dijkstra_algorithm(beginning, destination, graph):
         
         return path, cost_edge
 
-def update_node_options():
-    nodes = list(Graph.keys())
-    start_node_menu['menu'].delete(0, 'end')
+def update_node_options():  #atualização das opções de nós nos menus de seleção de início e fim
+    nodes = list(Graph.keys()) #lista com as chaves do dicionário Graph (os nós)
+    start_node_menu['menu'].delete(0, 'end')  #limpa os itens do menu de seleção de nó de início e fim
     end_node_menu['menu'].delete(0, 'end')
-    for node in nodes:
-        start_node_menu['menu'].add_command(label=node, command=lambda value=node: start_node.set(value))
-        end_node_menu['menu'].add_command(label=node, command=lambda value=node: end_node.set(value))
+    for node in nodes: #    # Para cada nó na lista de nós
+        start_node_menu['menu'].add_command(label=node, command=lambda value=node: start_node.set(value)) #add uma opção no menu de seleção de início, definindo o valor selecionado no start_node
+        end_node_menu['menu'].add_command(label=node, command=lambda value=node: end_node.set(value))  # add uma opção no menu de fim, determinando o valor no end_node
 
-def find_shortest_path():
+def find_shortest_path(): #encontra o menor caminho chamando a função de dijkstra
     beginning = start_node.get()
     destination = end_node.get()
-    if beginning and destination:
-        result = dijkstra_algorithm(beginning, destination, Graph)
-        if isinstance(result, str):
-            result_label.config(text=result)
+    if beginning and destination:  #se ambos os nós forem selecionados
+        result = dijkstra_algorithm(beginning, destination, Graph) #chama a função do algoritmo de dijkstra 
+        if isinstance(result, str): #se o resultado obtido for uma string (texto de aviso ou erro),
+            result_label.config(text=result) #atualiza com uma mensagem
         else:
-            path, cost_edge = result
-            cost_edge = [float(cost) for cost in cost_edge]
-            total_distance = sum(cost_edge)
-            result_text = (
+            path, cost_edge = result #se o resultado for uma tupla ( caminho e custos das arestas)
+            cost_edge = [float(cost) for cost in cost_edge] #converte pra float os custos das arestas
+            total_distance = sum(cost_edge)  #calcular a distância total somando os custos das arestas
+            result_text = (  #mensagem de caminho, custos de arestas e distância total
                 f"Caminho mais curto de {beginning} para {destination}: {' -> '.join(path)}\n"
                 f"Custos das arestas: {', '.join(map(str, cost_edge))}\n"
                 f"Distância Total: {total_distance:.2f}"
             )
             result_label.config(text=result_text)
-            plot_shortest_path(Graph, path)
+            plot_shortest_path(Graph, path)  #chama a função de plotar o caminho mais curto
     else:
         messagebox.showwarning("Aviso", "Por favor, selecione os nós de origem e destino")
 
-def plot_shortest_path(graph, path):
-    G = nx.Graph()
+def plot_shortest_path(graph, path):  #plota o caminho mais curto 
+    G = nx.Graph()  #criando o grafo
     for node in graph:
         for neighbor, weight in graph[node].items():
-            G.add_edge(node, neighbor, weight=weight)
+            G.add_edge(node, neighbor, weight=weight)  #adição de arestas e nós
             
     pos = nx.spring_layout(G) # Utiliza o layout spring para melhor organização dos nós
     nx.draw(G, pos, with_labels=True, node_color='lightblue', node_size=500, font_size=10, edge_color='gray', width=2, font_weight='bold')
