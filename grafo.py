@@ -18,7 +18,7 @@ def graph_construct(data):
         beginning=data['beginning'][i] #1
         destination=data['destination'][i] #2
         distance =  data['distance'][i] #3
-        #presença do nó de origem e destino - caso negativa, adiciona ao grafo
+        #presença do nó de origem e destino - caso nao tenha, adiciona ao grafo
         if beginning not in graph:
             graph[beginning] = {}
         if destination not in graph:
