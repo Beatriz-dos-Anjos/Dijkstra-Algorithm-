@@ -16,5 +16,6 @@ Este projeto foi desenvolvido utilizando as seguintes tecnologias e bibliotecas:
 ---
 ## 🖼️ Galeria do projeto
 
-
-
+![Captura de tela_20240715_141544](https://github.com/user-attachments/assets/2b83a29b-214a-4b13-8d4c-37f0a9357688)
+![image](https://github.com/user-attachments/assets/be860a23-7b97-467d-8444-cac6effd236b)
+![image](https://github.com/user-attachments/assets/30eeb133-1df1-4a48-9649-d402055a70d9)
