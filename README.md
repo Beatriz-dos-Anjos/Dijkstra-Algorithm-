@@ -28,4 +28,5 @@ Para ter visualização completa , é importante dar zoom de acordo com o canto 
 **Link do Git**
 
 Beatriz Mergulhão dos Anjos - https://github.com/Beatriz-dos-Anjos
-Maria Clara Gomes Alves -
+Maria Clara Gomes Alves - https://github.com/M4riaclaragomes
+Luiza Trigueiro do Rego Barros -
