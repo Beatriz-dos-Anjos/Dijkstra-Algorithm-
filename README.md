@@ -29,4 +29,4 @@ Para ter visualização completa , é importante dar zoom de acordo com o canto 
 
 Beatriz Mergulhão dos Anjos - https://github.com/Beatriz-dos-Anjos
 Maria Clara Gomes Alves - https://github.com/M4riaclaragomes
-Luiza Trigueiro do Rego Barros -
+Luiza Trigueiro do Rego Barros - https://github.com/luizatrigueiro
